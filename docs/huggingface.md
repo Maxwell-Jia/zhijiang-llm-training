@@ -67,4 +67,6 @@ huggingface-cli download --repo-type dataset --resume-download wikitext --local-
 
 Pytorch、Tensorflow、JAX 等框架的再次封装，实现了各种常见的深度学习模型，尤其是 transformer 类的模型。模型的代码文件具有极强的可读性，是了解大模型各种细节的优秀教材，比如 [llama](https://github.com/huggingface/transformers/tree/main/src/transformers/models/llama)。
 
-模型的定义必须包含两个文件：configration_xxx.py 和 modeling_xxx.py，其中 xxx 表示模型名称
+模型的定义必须包含两个文件：configration_xxx.py 和 modeling_xxx.py，其中 xxx 表示模型名称。huggingface 所有的模型都必须有通过配置文件定义模型结构，这个配置包含了模型所有用到的参数信息。模型结构的定义必须包含在一个单一的 modeling_xxx.py 文件中，以防止其他人阅读源码时在各种文件之间跳转。
+
+代码编写时往往会强调代码的复用性，尽可能减少重复代码的编写，但 transformers 库的设计却背道而驰。所有的模型定义必须包含在一个单一的文件中，这导致一些广泛使用的模块被反复复制在不同的文件中，比如 self-attention 的实现，这里体现了 transformers 库的设计理念，详见[知乎链接](https://zhuanlan.zhihu.com/p/648097305)。
