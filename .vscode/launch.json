@@ -1,0 +1,30 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/src",
+                "HF_ENDPOINT": "https://hf-mirror.com"
+            },
+            "args": [
+                "--model_name_or_path", "openai-community/gpt2",
+                "--dataset_name", "wikitext",
+                "--dataset_config_name", "wikitext-2-raw-v1",
+                "--per_device_train_batch_size", "2",
+                "--per_device_eval_batch_size", "2",
+                "--do_train",
+                "--do_eval",
+                "--output_dir", "/outputs/debug"
+              ]
+        }
+    ]
+}
