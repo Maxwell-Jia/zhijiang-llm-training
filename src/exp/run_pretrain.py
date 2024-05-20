@@ -446,6 +446,9 @@ def main():
         )
     else:
         model = AutoModelForCausalLM.from_config(config, trust_remote_code=model_args.trust_remote_code)
+        # Convert model parameters to bfloat16
+        for param in model.parameters():
+            param.data = param.data.to(torch.bfloat16)
         n_params = sum({p.data_ptr(): p.numel() for p in model.parameters()}.values())
         logger.info(f"Training new model from scratch - Total size={n_params/2**20:.2f}M params")
 
