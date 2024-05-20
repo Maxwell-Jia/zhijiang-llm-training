@@ -1,30 +1,35 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
             "name": "Python Debugger: Current File",
             "type": "debugpy",
             "request": "launch",
-            "program": "${file}",
+            "program": "${workspaceFolder}/src/exp/run_pretrain.py",
             "console": "integratedTerminal",
             "justMyCode": false,
             "env": {
-                "PYTHONPATH": "${workspaceFolder}/src",
-                "HF_ENDPOINT": "https://hf-mirror.com"
+                "PYTHONPATH": "${workspaceFolder}/src"
             },
             "args": [
-                // "--model_name_or_path", "openai-community/gpt2",
-                // "--dataset_name", "wikitext",
-                // "--dataset_config_name", "wikitext-2-raw-v1",
-                // "--per_device_train_batch_size", "2",
-                // "--per_device_eval_batch_size", "2",
-                // "--do_train",
-                // "--do_eval",
-                // "--output_dir", "/outputs/debug"
-              ]
+                "--config_name", "configs/models/Llama-2-300M.json",
+                "--tokenizer_name", "TinyPixel/Llama-2-7B-bf16-sharded",
+                "--dataset_name", "wikitext",
+                "--dataset_config_name", "wikitext-2-raw-v1",
+                "--block_size", "1024",
+                "--per_device_train_batch_size", "1",
+                "--per_device_eval_batch_size", "1",
+                "--do_train",
+                "--output_dir", "./outputs/llama-2-300m_wikitext",
+                "--max_steps", "1000",
+                "--warmup_steps", "50",
+                "--logging_steps", "100",
+                "--save_steps", "2500",
+                "--seed", "2024",
+                "--bf16", "true",
+                "--torch_compile",
+                "--learning_rate", "1e-4"
+            ]
         }
     ]
 }

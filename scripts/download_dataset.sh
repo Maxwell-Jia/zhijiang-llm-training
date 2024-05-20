@@ -1,5 +1,5 @@
 #!/bin/bash
 
 python src/exp/download_dataset.py \
-    --dataset devingulliver/dolma-v1_6-sample \
+    --dataset togethercomputer/RedPajama-Data-1T \
     
