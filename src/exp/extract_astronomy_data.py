@@ -71,6 +71,8 @@ def main(args):
 
     # Get documents
     docs_list = os.listdir(args.documents_dir)
+    tmp = [item for item in docs_list if not item.endswith(".swp")]
+    docs_list = tmp
     if len(docs_list) == 0:
         raise ValueError("No documents found in the directory.")
     docs_list.sort()
