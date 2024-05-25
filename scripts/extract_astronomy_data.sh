@@ -11,6 +11,6 @@ python ${INPUT_DIR}/src/exp/extract_astronomy_data.py \
     --examples_path ${INPUT_DIR}/datasets/astro-wiki-examples.jsonl \
     --documents_dir ${DATASETS_DIR}/wikipedia/20231101.en/ \
     --output_path ${OUTPUT_DIR}/wiki-astro.jsonl \
-    --max_items 5 \
+    --max_items 9999999 \
     --gpu 7 \
-    > ${OUTPUT_DIR}/extract_astro.log 2>&1
+    > ${INPUT_DIR}/astro-wiki.log 2>&1

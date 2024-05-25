@@ -18,7 +18,7 @@ import pyarrow.parquet as pq
 
 
 def load_file(file_path):
-    id_list, text_list = [], [], []
+    id_list, text_list = [], []
 
     if file_path.endswith(".jsonl.gz"):
         with gzip.open(file_path, "rt") as f:
@@ -27,7 +27,7 @@ def load_file(file_path):
                 id_list.append(data["id"])
                 text_list.append(data["text"])
     
-    elif file_path.endswith(".json") or file_path.endwith(".jsonl"):
+    elif file_path.endswith(".json") or file_path.endswith(".jsonl"):
         with open(file_path, "r") as f:
             for line in f:
                 data = json.loads(line)
@@ -61,7 +61,7 @@ def main(args):
     # Embedding examples text
     example_embeddings = model.encode(
         examples,
-        show_progress_bar=False,
+        show_progress_bar=True,
         batch_size=args.batch_size,
         convert_to_numpy=False,
         normalize_embeddings=True,
@@ -70,7 +70,7 @@ def main(args):
     example_embeddings = torch.vstack(example_embeddings)
 
     # Get documents
-    docs_list = os.listdir(args.document_dir)
+    docs_list = os.listdir(args.documents_dir)
     if len(docs_list) == 0:
         raise ValueError("No documents found in the directory.")
     docs_list.sort()
@@ -79,7 +79,7 @@ def main(args):
     for docs in docs_list:
         # Load .json.gz file
         print(f"Loading file: {docs}")
-        docs = os.path.join(args.document_dir, docs)
+        docs = os.path.join(args.documents_dir, docs)
         start_time = time.time()
         id_list, text_list = load_file(docs)
         print("File Loaded.")
@@ -87,7 +87,7 @@ def main(args):
         # Embedding document titles
         docs_embeddings = model.encode(
             text_list,
-            show_progress_bar=False,
+            show_progress_bar=True,
             batch_size=args.batch_size,
             convert_to_numpy=False,
             normalize_embeddings=True,
