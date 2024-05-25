@@ -20,7 +20,7 @@ import pyarrow.parquet as pq
 def load_file(file_path):
     id_list, text_list = [], []
 
-    if file_path.endswith(".jsonl.gz"):
+    if file_path.endswith(".json.gz"):
         with gzip.open(file_path, "rt") as f:
             for line in f:
                 data = json.loads(line)
