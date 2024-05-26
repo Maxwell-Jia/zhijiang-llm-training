@@ -9,10 +9,10 @@ DATASETS_DIR=/mnt/geogpt-gpfs/llm-course/public/datasets
 
 python ${INPUT_DIR}/src/exp/extract_astronomy_data.py \
     --examples_path ${INPUT_DIR}/datasets/astro-examples.jsonl \
-    --documents_dir ${DATASETS_DIR}/dolma_v1_7/C4/documents \
-    --output_path ${OUTPUT_DIR}/c4-astro-epoch-3.jsonl \
-    --similar_threshold 0.6 \
+    --documents_dir ${DATASETS_DIR}/dolma_v1_7/CC_middle/documents \
+    --output_path ${OUTPUT_DIR}/cc_middle-astro-epoch-3.jsonl \
+    --similar_threshold 0.4 \
     --max_items 9999999 \
-    --gpu 2 \
+    --gpu 4 \
     --batch_size 4096 \
-    > ${INPUT_DIR}/outputs/c4-astro-epoch-3.log 2>&1
+    > ${INPUT_DIR}/outputs/cc_middle-astro-epoch-3.log 2>&1

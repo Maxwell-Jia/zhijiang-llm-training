@@ -8,9 +8,10 @@ OUTPUT_DIR=${INPUT_DIR}/datasets
 DATASETS_DIR=/mnt/geogpt-gpfs/llm-course/public/datasets
 
 python ${INPUT_DIR}/src/exp/extract_astronomy_data.py \
-    --examples_path ${INPUT_DIR}/datasets/astro-wiki-examples.jsonl \
+    --examples_path ${INPUT_DIR}/datasets/astro-examples.jsonl \
     --documents_dir ${DATASETS_DIR}/dolma_v1_7/wiki/documents \
-    --output_path ${OUTPUT_DIR}/megawika-astro.jsonl \
+    --output_path ${OUTPUT_DIR}/megawika-astro-epoch-3.jsonl \
+    --similar_threshold 0.4 \
     --max_items 9999999 \
-    --gpu 7 \
-    > ${INPUT_DIR}/megawika-astro.log 2>&1
+    --gpu 0 \
+    > ${INPUT_DIR}/outputs/megawika-astro-epoch-3.log 2>&1
