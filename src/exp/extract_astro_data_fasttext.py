@@ -49,6 +49,7 @@ def main(args):
     if len(file_list) == 0:
         raise ValueError("No files found in the data directory.")
     file_list.sort()
+    file_list = file_list[args.skip_files:]
 
     item_count = 0
     for file in file_list:
@@ -95,6 +96,7 @@ if __name__ == "__main__":
     parser.add_argument("--threshold", type=float, default=0.9)
     parser.add_argument("--output_path", type=str, required=True)
     parser.add_argument("--max_items", type=int, default=10000000)
+    parser.add_argument("--skip_files", type=int, default=0)
     args = parser.parse_args()
 
     main(args)
