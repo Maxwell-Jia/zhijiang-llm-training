@@ -4,6 +4,6 @@ export NUM_WORKERS=4
 export INFERENCE_RAM=80
 
 marker_chunk_convert \
-  /mnt/geogpt-gpfs/llm-course/public/tianwen/datasets/books/pdf-en/1 \
+  /mnt/geogpt-gpfs/llm-course/public/tianwen/datasets/books/pdf-en/6 \
   /mnt/geogpt-gpfs/llm-course/public/tianwen/datasets/books/mmd-en \
   

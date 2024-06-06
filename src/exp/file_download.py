@@ -8,7 +8,7 @@ from tqdm import tqdm
 import pandas as pd
 
 # Function to download a single file asynchronously with retry mechanism and timeout
-async def download_file(session, url, save_folder, progress_queue, semaphore, max_retries=3, timeout=3600):
+async def download_file(session, url, save_folder, semaphore, progress_bar, max_retries=3, timeout=3600):
     save_path = os.path.join(save_folder, os.path.basename(unquote(url)))
     async with semaphore:
         for attempt in range(max_retries):
@@ -17,35 +17,33 @@ async def download_file(session, url, save_folder, progress_queue, semaphore, ma
                 async with session.get(url, timeout=aiohttp.ClientTimeout(total=timeout)) as response:
                     total_size = int(response.headers.get('content-length', 0))
                     with open(save_path, 'wb') as file:
+                        progress_bar.reset(total=total_size)
                         async for data in response.content.iter_chunked(1024):
                             file.write(data)
-                await progress_queue.put(1)  # Indicate that one file has been downloaded
+                            progress_bar.update(len(data))
+                # Write the successfully downloaded URL to the file
+                with open("downloaded_urls.txt", "a") as log_file:
+                    log_file.write(f"{url}\n")
                 break  # Exit the retry loop if successful
             except (aiohttp.ClientPayloadError, aiohttp.ClientError, asyncio.TimeoutError) as e:
                 print(f"Error downloading {url}: {e}. Retrying {attempt + 1}/{max_retries}")
                 if attempt + 1 == max_retries:
                     print(f"Failed to download {url} after {max_retries} attempts.")
+                    progress_bar.close()
 
 # Coroutine to download a list of files
-async def download_files(url_list, save_folder, progress_queue, max_concurrent_downloads, timeout):
+async def download_files(url_list, save_folder, max_concurrent_downloads, timeout):
     semaphore = asyncio.Semaphore(max_concurrent_downloads)
     async with aiohttp.ClientSession() as session:
-        tasks = [download_file(session, url, save_folder, progress_queue, semaphore, timeout=timeout) for url in url_list]
+        tasks = []
+        for url in url_list:
+            progress_bar = tqdm(total=1, unit='B', unit_scale=True, desc=f"Downloading {os.path.basename(unquote(url))}")
+            tasks.append(download_file(session, url, save_folder, semaphore, progress_bar, timeout=timeout))
         await asyncio.gather(*tasks)
 
-# Function to handle the global progress bar
-async def handle_progress_bar(total_files, progress_queue):
-    with tqdm(total=total_files, unit='file', desc='Downloading') as pbar:
-        for _ in range(total_files):
-            await progress_queue.get()
-            pbar.update(1)
-
 # Function to handle multiprocessing
-def download_files_process(url_list, save_folder, total_files, max_concurrent_downloads, timeout):
-    progress_queue = asyncio.Queue()
-    loop = asyncio.get_event_loop()
-    loop.create_task(handle_progress_bar(total_files, progress_queue))
-    loop.run_until_complete(download_files(url_list, save_folder, progress_queue, max_concurrent_downloads, timeout))
+def download_files_process(url_list, save_folder, max_concurrent_downloads, timeout):
+    asyncio.run(download_files(url_list, save_folder, max_concurrent_downloads, timeout))
 
 # Function to split the list of URLs for multiprocessing
 def split_list(input_list, n):
@@ -69,8 +67,6 @@ def main(args):
         df = pd.read_csv(urls_file)
         urls = df['pdf_url'].tolist()
 
-    total_files = len(urls)
-
     # Create a folder to save downloaded files
     os.makedirs(save_folder, exist_ok=True)
 
@@ -81,7 +77,7 @@ def main(args):
     with Pool(num_processes) as pool:
         results = [pool.apply_async(
             download_files_process,
-            (sublist, save_folder, total_files, max_concurrent_downloads, timeout),
+            (sublist, save_folder, max_concurrent_downloads, timeout),
             error_callback=lambda e: print(f"Error: {e}")
         ) for sublist in url_sublists]
 

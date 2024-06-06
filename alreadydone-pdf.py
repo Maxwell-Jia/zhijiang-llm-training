@@ -3,7 +3,7 @@ import zipfile
 
 # 设置源目录和目标目录的路径
 source_dir = '/mnt/geogpt-gpfs/llm-course/ossutil_output/public/tianwen/datasets/books/mmd-en'
-target_dir = '/mnt/geogpt-gpfs/llm-course/ossutil_output/public/tianwen/datasets/books/pdf-en/1'
+target_dir = '/mnt/geogpt-gpfs/llm-course/ossutil_output/public/tianwen/datasets/books/pdf-en/6'
 
 # 用于存储所有需要打包的文件路径的列表
 files_to_zip = []
