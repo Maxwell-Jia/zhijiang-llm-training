@@ -1,0 +1,28 @@
+batch_size: 10000
+debug: false
+destination: /mnt/geogpt-gpfs/llm-course/public/tianwen/datasets/fineweb-edu-sample-100BT/npy_data/
+documents:
+  - /mnt/geogpt-gpfs/llm-course/public/tianwen/datasets/fineweb-edu-sample-100BT/documents/part_00*.jsonl.gz
+  - /mnt/geogpt-gpfs/llm-course/public/tianwen/datasets/fineweb-edu-sample-100BT/documents/part_01*.jsonl.gz
+  - /mnt/geogpt-gpfs/llm-course/public/tianwen/datasets/fineweb-edu-sample-100BT/documents/part_02*.jsonl.gz
+  - /mnt/geogpt-gpfs/llm-course/public/tianwen/datasets/fineweb-edu-sample-100BT/documents/part_03*.jsonl.gz
+  - /mnt/geogpt-gpfs/llm-course/public/tianwen/datasets/fineweb-edu-sample-100BT/documents/part_04*.jsonl.gz
+  - /mnt/geogpt-gpfs/llm-course/public/tianwen/datasets/fineweb-edu-sample-100BT/documents/part_05*.jsonl.gz
+dryrun: false
+dtype: uint16
+files_per_process: null
+max_size: 1073741824
+processes: 32
+ring_size: 8
+sample_ring_prop: false
+seed: 3920
+tokenizer:
+  bos_token_id: 0
+  eos_token_id: 0
+  name_or_path: /mnt/geogpt-gpfs/llm-course/ossutil_output/public/tianwen/npy/tokenizers/EleutherAI/gpt-neox-20b.json
+  pad_token_id: null
+  segment_before_tokenization: false
+tokenizer_name_or_path: null
+work_dir:
+  input: null
+  output: null
