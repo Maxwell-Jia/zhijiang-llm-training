@@ -1,6 +1,7 @@
 outputs/
 datasets/
 pretrained/
+logs/
 *.out
 
 # Byte-compiled / optimized / DLL files
